@@ -95,6 +95,19 @@ def filter_urls_by_date(urls, date):
     """
     return [url for url, lastmod in urls if lastmod == date]
 
+def filter_urls_by_dates(urls, dates):
+    """
+    Filter the URLs by last modification date.
+
+    Args:
+        urls (list): A list of tuples containing the URLs and last modification dates.
+        date (list): The dates to filter by.
+
+    Returns:
+        list: A list of URLs that match the date.
+    """
+    return [url for url, lastmod in urls if lastmod in dates]
+
 def save_urls_to_file(file_path, urls):
     """
     Save the URLs to a CSV file.

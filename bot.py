@@ -23,7 +23,9 @@ def process_sitemap(date = None, filter_by_date = True):
     print(f"Found {len(urls)} URLs in the sitemap.")
     
     if filter_by_date:
-        filtered_urls = filter_urls_by_date(urls, date)
+        if(type(date) == str):    
+            date = [date]
+        filtered_urls = filter_urls_by_dates(urls, date)
     else:
         filtered_urls = [url for url, lastmod in urls]
 
@@ -55,6 +57,13 @@ def main():
     yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
     process_sitemap(yesterday)
     
+def processMultiDates(days):
+    dates = []
+    for i in range(days):
+        dates.append((datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d'))
+    process_sitemap(dates)
+    
 
 if __name__ == "__main__":
-    main()
+    # main()
+    processMultiDates(10)
