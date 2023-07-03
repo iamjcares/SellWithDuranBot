@@ -325,20 +325,20 @@ def parse_data(data, toExtract):
         dict: The extracted fields with data.
     """
     response = {}
+    statuses = {
+        'comingSoon': 'Coming Soon',
+        'active': 'Available',
+        'openHouse': 'Available',
+        'justListed': 'Available',
+        'priceReduced': 'Price reduced',
+        'sold': 'Sold',
+    }
     
     for field, value in toExtract.items():
         if value in data:
             if field == 'photourl':
                 response[field] = data[value][0] if len(data[value]) else ''
             elif field == 'status':
-                statuses = {
-                    'comingSoon': 'Coming Soon',
-                    'active': 'Available',
-                    'openHouse': 'Available',
-                    'justListed': 'Available',
-                    'priceReduced': 'Price reduced',
-                    'sold': 'Sold',
-                }
                 response[field] = statuses[data[value]] if data[value] in statuses else 'Available'
             else:
                 response[field] = data[value]
@@ -397,6 +397,7 @@ def process_url(url, config, max_cutoff = 6):
         return False
         
     needed = parse_data(extracted, config['api_extraction'])
+    needed['sitemapurl'] = url
     
     processed = post_data(config['webform_url'], needed)
     
